@@ -55,8 +55,8 @@ class AudioConverter:
         # Botón de conversión
         self.btn_convert = tk.Button(main_frame, text="Convertir", 
                                 command=self.convert_file, bg="#4CAF50", fg="white",
-                                state=tk.DISABLED, width=15)
-        self.btn_convert.pack(pady=20)
+                                state=tk.DISABLED, width=15, font=("Arial", 9, "bold"))
+        self.btn_convert.pack(pady=10)
         
         # Barra de estado
         self.status = tk.Label(main_frame, text="Listo", bg=bg_color, fg="gray", 
