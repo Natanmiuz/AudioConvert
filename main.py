@@ -1,6 +1,7 @@
 import tkinter as tk
 from gui.gui import AudioConverter
 
+# Nacimiento de la aplicación
 try:
     # For Windows 10 DPI awareness
     import ctypes
