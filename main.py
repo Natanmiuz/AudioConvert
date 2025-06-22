@@ -1,14 +1,9 @@
-import tkinter as tk
-from gui.gui import AudioConverter
-
-try:
-  
-    import ctypes
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)
-except:
-    pass
+import sys
+from gui.gui import AudioConverterApp
+from PyQt5.QtWidgets import QApplication
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = AudioConverter(root)
-    root.mainloop()
+    app = QApplication(sys.argv)
+    window = AudioConverterApp()
+    window.show()
+    sys.exit(app.exec_())
