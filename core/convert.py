@@ -1,28 +1,28 @@
 import subprocess
 import os
+import shutil
 
-def convert_audio(input_path, output_format):
-    """
-    Convierte un archivo de audio usando FFmpeg
-    
-    Args:
-        input_path (str): Ruta del archivo de entrada
-        output_format (str): Formato de salida (ej: 'mp3', 'wav')
-    
-    Returns:
-        str: Ruta del archivo convertido
-    
-    Raises:
-        FileNotFoundError: Si el archivo no existe
-        RuntimeError: Si falla la conversión
-    """
+def convert_audio(input_path, output_format, output_dir=None):
     if not os.path.exists(input_path):
-        raise FileNotFoundError(f"El archivo {input_path} no existe")
+        raise FileNotFoundError(f"File not found: {input_path}")
+    
+    if shutil.which('ffmpeg') is None:
+        raise RuntimeError("FFmpeg is not installed or not found in system PATH")
+    
+    output_directory = output_dir if output_dir else os.path.dirname(input_path)
+    
+    os.makedirs(output_directory, exist_ok=True)
     
     filename = os.path.basename(input_path)
-    base, _ = os.path.splitext(filename)
-    output_filename = f"{base}_convertido.{output_format}"
-    output_path = os.path.join(os.path.dirname(input_path), output_filename)
+    base, ext = os.path.splitext(filename)
+    output_filename = f"{base}_converted.{output_format}"
+    output_path = os.path.join(output_directory, output_filename)
+    
+    counter = 1
+    while os.path.exists(output_path):
+        output_filename = f"{base}_converted_{counter}.{output_format}"
+        output_path = os.path.join(output_directory, output_filename)
+        counter += 1
     
     try:
         result = subprocess.run(
@@ -33,10 +33,19 @@ def convert_audio(input_path, output_format):
         )
         
         if result.returncode != 0:
-            error_msg = result.stderr if result.stderr else "Error desconocido en FFmpeg"
+            error_msg = result.stderr.strip() if result.stderr else "Unknown FFmpeg error"
             raise RuntimeError(f"FFmpeg error: {error_msg}")
         
+        if not os.path.exists(output_path):
+            raise RuntimeError("Conversion failed: Output file was not created")
         return output_path
     
     except Exception as e:
-        raise RuntimeError(f"Error en la conversión: {str(e)}")
+        if os.path.exists(output_path):
+            try:
+                os.remove(output_path)
+            except:
+                pass
+        raise RuntimeError(f"Conversion error: {str(e)}")
+    
+    

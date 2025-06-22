@@ -4,8 +4,15 @@ __pycache__/
 *.pyc
 *.pyo   
 .vscode/
-audio/
-ffmpeg/
-dist/
+#audio/
+.mp4
+.mkv
+.avi
+
+# Binary files
+#ffmpeg/
+*.exe
+# PyInstaller
 build/
-main.spec
+dist/
+*.spec
