@@ -183,7 +183,7 @@ class AudioConverterApp(QMainWindow):
    #     try:
     #        self.setWindowIcon(QIcon("icon/icon.png"))
      #   except:
-      #      pass
+      #      pass  INTENTO FALLIDO DE PONER ICONO, NO SE PORQUE NO FUNCIONA, SI ALGUIEN SABE COMO PONER EL ICONO QUE ME DIGA PORFAVOR
 
     def select_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
